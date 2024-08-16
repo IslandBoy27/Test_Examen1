@@ -5,85 +5,110 @@ import java.awt.event.ActionListener;
 
 public class SocialApp extends JFrame {
     private UberSocial uberSocial;
-    private JTextArea outputArea;
 
-    // Constructor
     public SocialApp() {
         uberSocial = new UberSocial();
-        setTitle("Social Media Manager");
-        setSize(500, 400);
+        setTitle("UberSocial");
+        setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
+        setLocationRelativeTo(null);
 
-        outputArea = new JTextArea();
-        outputArea.setEditable(false);
-        add(new JScrollPane(outputArea), BorderLayout.CENTER);
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(0, 1, 10, 10));
+        add(panel);
 
-        JPanel panel = new JPanel(new GridLayout(0, 1));
+        // Crear botones
+        JButton btnAgregarCuenta = new JButton("Agregar Cuenta");
+        JButton btnAgregarPost = new JButton("Agregar Post");
+        JButton btnAgregarAmigo = new JButton("Agregar Amigo");
+        JButton btnAgregarComment = new JButton("Agregar Comentario");
+        JButton btnVerPerfil = new JButton("Ver Perfil");
 
-        // Botones para cada funcionalidad
-        JButton addAccountBtn = new JButton("Agregar Cuenta");
-        addAccountBtn.addActionListener(e -> agregarCuenta());
-        panel.add(addAccountBtn);
+        // Añadir botones al panel
+        panel.add(btnAgregarCuenta);
+        panel.add(btnAgregarPost);
+        panel.add(btnAgregarAmigo);
+        panel.add(btnAgregarComment);
+        panel.add(btnVerPerfil);
 
-        JButton addPostBtn = new JButton("Agregar Post");
-        addPostBtn.addActionListener(e -> agregarPost());
-        panel.add(addPostBtn);
+        // Configurar acciones de los botones
+        btnAgregarCuenta.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                agregarCuenta();
+            }
+        });
 
-        JButton addFriendBtn = new JButton("Agregar Amigo");
-        addFriendBtn.addActionListener(e -> agregarAmigo());
-        panel.add(addFriendBtn);
+        btnAgregarPost.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                agregarPost();
+            }
+        });
 
-        JButton addCommentBtn = new JButton("Agregar Comentario");
-        addCommentBtn.addActionListener(e -> agregarComment());
-        panel.add(addCommentBtn);
+        btnAgregarAmigo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                agregarAmigo();
+            }
+        });
 
-        JButton viewProfileBtn = new JButton("Ver Perfil");
-        viewProfileBtn.addActionListener(e -> verPerfil());
-        panel.add(viewProfileBtn);
+        btnAgregarComment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                agregarComment();
+            }
+        });
 
-        add(panel, BorderLayout.EAST);
-
-        setVisible(true);
+        btnVerPerfil.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                verPerfil();
+            }
+        });
     }
 
     private void agregarCuenta() {
         String username = JOptionPane.showInputDialog(this, "Ingrese el nombre de usuario:");
         String tipo = JOptionPane.showInputDialog(this, "Ingrese el tipo de cuenta (FACEBOOK/TWITTER):");
         uberSocial.agregarCuenta(username, tipo);
-        outputArea.append("Cuenta agregada: " + username + " (" + tipo + ")\n");
+        JOptionPane.showMessageDialog(this, "Cuenta agregada.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void agregarPost() {
-        String username = JOptionPane.showInputDialog(this, "Ingrese el nombre de usuario:");
+        String user = JOptionPane.showInputDialog(this, "Ingrese el nombre de usuario:");
         String post = JOptionPane.showInputDialog(this, "Ingrese el contenido del post:");
-        uberSocial.agregarPost(username, post);
-        outputArea.append("Post agregado por " + username + ": " + post + "\n");
+        uberSocial.agregarPost(user, post);
+        JOptionPane.showMessageDialog(this, "Post agregado.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void agregarAmigo() {
-        String user1 = JOptionPane.showInputDialog(this, "Ingrese el nombre del primer usuario:");
-        String user2 = JOptionPane.showInputDialog(this, "Ingrese el nombre del segundo usuario:");
+        String user1 = JOptionPane.showInputDialog(this, "Ingrese el primer usuario:");
+        String user2 = JOptionPane.showInputDialog(this, "Ingrese el segundo usuario:");
         uberSocial.agregarAmigo(user1, user2);
-        outputArea.append(user1 + " y " + user2 + " ahora son amigos.\n");
+        JOptionPane.showMessageDialog(this, "Amigos agregados.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void agregarComment() {
-        String username = JOptionPane.showInputDialog(this, "Ingrese el nombre de usuario:");
+        String user = JOptionPane.showInputDialog(this, "Ingrese el nombre de usuario:");
         int postID = Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese el ID del post:"));
-        String autor = JOptionPane.showInputDialog(this, "Ingrese el nombre del autor:");
+        String autor = JOptionPane.showInputDialog(this, "Ingrese el autor del comentario:");
         String comment = JOptionPane.showInputDialog(this, "Ingrese el contenido del comentario:");
-        uberSocial.agregarComment(username, postID, autor, comment);
-        outputArea.append("Comentario agregado por " + autor + " al post " + postID + " de " + username + ".\n");
+        uberSocial.agregarComment(user, postID, autor, comment);
+        JOptionPane.showMessageDialog(this, "Comentario agregado.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void verPerfil() {
-        String username = JOptionPane.showInputDialog(this, "Ingrese el nombre de usuario:");
-        outputArea.append("Perfil de " + username + ":\n");
-        uberSocial.profileFrom(username);
+        String user = JOptionPane.showInputDialog(this, "Ingrese el nombre de usuario:");
+        uberSocial.profileFrom(user);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(SocialApp::new);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new SocialApp().setVisible(true);
+            }
+        });
     }
 }
