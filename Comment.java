@@ -1,31 +1,19 @@
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.text.SimpleDateFormat;
 
 public final class Comment {
     private int postId;
-    private String author;
-    private String content;
-    private Calendar date;
+    private String autor;
+    private String contenido;
+    private Calendar fecha;
 
-    // Constructor
-    public Comment(int postId, String author, String content) {
+    public Comment(int postId, String autor, String contenido) {
         this.postId = postId;
-        this.author = author;
-        this.content = content;
-        this.date = new GregorianCalendar(); // Inicializa con la fecha y hora actual
+        this.autor = autor;
+        this.contenido = contenido;
+        this.fecha = Calendar.getInstance(); // Inicializa con la fecha actual
     }
 
-    // Método para imprimir el comentario
-    public void print() {
-        int day = date.get(Calendar.DAY_OF_MONTH);
-        int month = date.get(Calendar.MONTH) + 1; // Enero es 0 en Calendar
-        int year = date.get(Calendar.YEAR) % 100; // Últimos dos dígitos del año
-
-        System.out.println(author + " - " + String.format("%02d/%02d/%02d", day, month, year));
-        System.out.println(content);
-    }
-
-    // Getters y Setters
     public int getPostId() {
         return postId;
     }
@@ -34,28 +22,34 @@ public final class Comment {
         this.postId = postId;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getAutor() {
+        return autor;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAutor(String autor) {
+        this.autor = autor;
     }
 
-    public String getContent() {
-        return content;
+    public String getContenido() {
+        return contenido;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
     }
 
-    public Calendar getDate() {
-        return date;
+    public Calendar getFecha() {
+        return fecha;
     }
 
-    public void setDate(Calendar date) {
-        this.date = date;
+    public void setFecha(Calendar fecha) {
+        this.fecha = fecha;
     }
 
+    public void print() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+        String formattedDate = dateFormat.format(fecha.getTime());
+        System.out.println(autor + " – " + formattedDate);
+        System.out.println(contenido);
+    }
 }
